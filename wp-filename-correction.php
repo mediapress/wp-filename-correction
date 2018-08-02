@@ -66,6 +66,7 @@ class WP_Filename_Correction {
 	 */
 	private function setup() {
 		add_action( 'plugins_loaded', array( $this, 'plugin_init' ) );
+		add_action( 'plugins_loaded', array( $this, 'load_admin' ), 9998 ); // pt settings 1.0.2.
 	}
 
 	/**
@@ -84,6 +85,23 @@ class WP_Filename_Correction {
 		WPFNC_Action_Handler::boot();
 	}
 
+	/**
+	 * Load pt-settings framework
+	 */
+	public function load_admin() {
+
+		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+			require_once $this->path . 'admin/pt-settings/pt-settings-loader.php';
+			require_once $this->path . 'admin/class-admin-settings.php';
+			Admin_Settings::boot();
+		}
+	}
+
+	/**
+	 * Get plugin path
+	 *
+	 * @return string
+	 */
 	public function get_path() {
 		return $this->path;
 	}

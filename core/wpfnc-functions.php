@@ -18,11 +18,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string|bool
  */
 function wpfnc_get_option( $option_key = '' ) {
-	$settings = get_option( 'spfnc_settings' );
+	$settings = get_option( 'wpfnc_settings' );
 
 	$settings = wp_parse_args( $settings, array(
 		'rule' => '{domain_name}{site_title}{user_name}',
-		'rule_separator' => '-',
 		'selected_case' => 'lower'
 	) );
 
@@ -41,7 +40,6 @@ function wpfnc_get_option( $option_key = '' ) {
 function wpfnc_get_rule_tags() {
 	$tags = array(
 		'site_title'  => __( 'Site title', 'wp-filename-correction' ),
-		'post_title'  => __( 'Post title', 'wp-filename-correction' ),
 		'user_name'   => __( 'User name', 'wp-filename-correction' ),
 		'domain_name' => __( 'Domain', 'wp-filename-correction' ),
 		'file_name'   => __( 'File name', 'wp-filename-correction' ),
@@ -64,13 +62,11 @@ function wpfnc_get_parsed_value( $rule, $file_name ) {
 
 	$parsed_value = str_replace( array(
 		'{site_title}',
-		'{post_title}',
 		'{user_name}',
 		'{domain_name}',
 		'{file_name}'
 	), array(
 		get_bloginfo( 'name' ),
-		get_the_title( get_queried_object_id() ),
 		wp_get_current_user()->display_name,
 		$server_name,
 		$file_name
