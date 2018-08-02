@@ -68,7 +68,7 @@ class WPFNC_Action_Handler {
 		}
 
 		$rule_sep = wpfnc_get_option( 'rule_separator' );
-		$rule     = wpfnc_get_parsed_rule( $rule, $file_name );
+		$rule     = wpfnc_get_parsed_value( $rule, $file_name );
 
 		$prefix = join( $rule_sep, $rule );
 
