@@ -28,11 +28,11 @@ class WPFNC_Action_Handler {
 	 */
 	private function setup() {
 		$self = new self();
-		add_filter( 'wp_handle_upload_prefilter', array( $self, 'filter_filename' ) );
+		add_filter( 'wp_handle_upload_prefilter', array( 'self::filter_filename' ) );
 
 		// Add support to MediaPress
 		add_filter( 'mpp_use_processed_file_name_as_media_title', array( $self, 'filter_media_title' ) );
-		add_filter( 'mpp_upload_prefilter', array( $self, 'filter_filename' ) );
+		add_filter( 'mpp_upload_prefilter', array( 'self::filter_filename' ) );
 	}
 
 	/**
