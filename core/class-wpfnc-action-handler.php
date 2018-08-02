@@ -45,9 +45,12 @@ class WPFNC_Action_Handler {
 	public static function filter_filename( $meta ) {
 		$self = new self();
 
+		$ext = pathinfo( $meta['name'], PATHINFO_EXTENSION );
+
 		$meta['name'] = $self->apply_rule( $meta['name'] );
 		$meta['name'] = $self->clean_cases( $meta['name'] );
 		$meta['name'] = sanitize_file_name( $meta['name'] );
+		$meta['name'] = $meta['name'] . '.' . $ext;
 
 		return $meta;
 	}
@@ -67,12 +70,9 @@ class WPFNC_Action_Handler {
 			return $file_name;
 		}
 
-		$rule_sep = wpfnc_get_option( 'rule_separator' );
-		$rule     = wpfnc_get_parsed_value( $rule, $file_name );
+		$file_name = wpfnc_get_parsed_value( $rule, $file_name );
 
-		$prefix = join( $rule_sep, $rule );
-
-		return $prefix . $rule_sep .$file_name;
+		return $file_name;
 	}
 
 	/**
