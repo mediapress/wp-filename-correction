@@ -102,7 +102,7 @@ class Admin_Settings {
 				'label'   => _x( 'Rule for filename renaming', 'Admin settings', 'wp-filename-correction' ),
 				'type'    => 'text',
 				'desc'    => __( '{site_title}, {user_name}, {domain_name} and {file_name} use these tags to create file rename rule.', 'wp-filename-correction' ),
-				'default' => '{domain_name}{user_name}{file_name}',
+				'default' => '{domain_name}-{user_name}-{file_name}',
 			),
 			array(
 				'name'    => 'selected_case',
@@ -113,6 +113,17 @@ class Admin_Settings {
 					'upper' => __( 'Upper case', 'wp-filename-correction' ),
 				),
 				'default' => 'lower',
+			),
+			array(
+				'name'    => 'encode_filename',
+				'label'   => _x( 'Encode file name', 'Admin settings', 'wp-filename-correction' ),
+				'type'    => 'radio',
+				'options' => array(
+					1 => __( 'Yes', 'wp-filename-correction' ),
+					0 => __( 'No', 'wp-filename-correction' ),
+				),
+				'default' => 0,
+				'desc'    => __( 'Will override above setting filename e.q. (8b1a9953c4611296a827abf8c47804d7.jpg)', 'wp-filename-correction' ),
 			),
 		);
 

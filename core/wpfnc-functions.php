@@ -21,8 +21,9 @@ function wpfnc_get_option( $option_key = '' ) {
 	$settings = get_option( 'wpfnc_settings' );
 
 	$settings = wp_parse_args( $settings, array(
-		'rule' => '{domain_name}{site_title}{user_name}',
-		'selected_case' => 'lower'
+		'rule'            => '{domain_name}{site_title}{user_name}',
+		'selected_case'   => 'lower',
+		'encode_filename' => 0,
 	) );
 
 	if ( isset( $settings[ $option_key ] ) ) {

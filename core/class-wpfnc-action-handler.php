@@ -1,6 +1,6 @@
 <?php
 /**
- * Class handle various action
+ * Class handler various action
  *
  * @package wp-filname-correction
  */
@@ -27,12 +27,11 @@ class WPFNC_Action_Handler {
 	 * Setup callbacks for various actions
 	 */
 	private function setup() {
-		$self = new self();
-		add_filter( 'wp_handle_upload_prefilter', array( 'self::filter_filename' ) );
+		add_filter( 'wp_handle_upload_prefilter', array( 'WPFNC_Action_Handler', 'filter_filename' ) );
 
 		// Add support to MediaPress
-		add_filter( 'mpp_use_processed_file_name_as_media_title', array( $self, 'filter_media_title' ) );
-		add_filter( 'mpp_upload_prefilter', array( 'self::filter_filename' ) );
+		add_filter( 'mpp_use_processed_file_name_as_media_title', array( $this, 'filter_media_title' ) );
+		add_filter( 'mpp_upload_prefilter', array( 'WPFNC_Action_Handler', 'filter_filename' ) );
 	}
 
 	/**
@@ -40,16 +39,22 @@ class WPFNC_Action_Handler {
 	 *
 	 * @param array $meta File meta info.
 	 *
-	 * @return
+	 * @return array
 	 */
 	public static function filter_filename( $meta ) {
 		$self = new self();
 
-		$ext = pathinfo( $meta['name'], PATHINFO_EXTENSION );
+		$ext          = pathinfo( $meta['name'], PATHINFO_EXTENSION );
+		$meta['name'] = str_replace( '.' . $ext, '', $meta['name'] );
 
-		$meta['name'] = $self->apply_rule( $meta['name'] );
-		$meta['name'] = $self->clean_cases( $meta['name'] );
-		$meta['name'] = sanitize_file_name( $meta['name'] );
+		if ( wpfnc_get_option( 'encode_filename' ) ) {
+			$meta['name'] = md5( $meta['name'] );
+		} else {
+			$meta['name'] = $self->apply_rule( $meta['name'] );
+			$meta['name'] = $self->clean_cases( $meta['name'] );
+			$meta['name'] = sanitize_file_name( $meta['name'] );
+		}
+
 		$meta['name'] = $meta['name'] . '.' . $ext;
 
 		return $meta;
@@ -85,6 +90,7 @@ class WPFNC_Action_Handler {
 	private function clean_cases( $file_name ) {
 
 		$selected_case = wpfnc_get_option( 'selected_case' );
+		$file_name     = remove_accents( $file_name );
 
 		if ( 'lower' == $selected_case ) {
 			$file_name = strtolower( $file_name );

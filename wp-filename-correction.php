@@ -44,6 +44,7 @@ class WP_Filename_Correction {
 	 */
 	private function __construct() {
 		$this->path = plugin_dir_path( __FILE__ );
+
 		$this->setup();
 	}
 
