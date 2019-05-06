@@ -73,5 +73,7 @@ function wpfnc_get_parsed_value( $rule, $file_name ) {
 		$file_name
 	), $rule );
 
+	$parsed_value = is_array( $parsed_value ) ? join( '-', $parsed_value ) : $parsed_value;
+
 	return $parsed_value;
 }
